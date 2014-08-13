@@ -3,16 +3,9 @@
  *
  */
 module.exports = function (grunt) {
-  grunt.loadNpmTasks('grunt-express');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-concurrent');
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     less: {
       development: {
         options: {
@@ -58,8 +51,16 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= pkg.author.name %> <%= pkg.license %> - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %>' +
+          ' */',
         mangle: false,
-        preserveComments: false
+        preserveComments: false,
+        compress: {
+          drop_console: true
+        },
+        report: 'min'
       },
       production: {
         files: {
@@ -116,6 +117,17 @@ module.exports = function (grunt) {
       }
     },
   });
+
+  grunt.loadNpmTasks('grunt-express');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-concurrent');
+  // build
+  grunt.registerTask('build', ['copy:templateToDist', 'less', 'concat', 'uglify']);
   //development
   grunt.registerTask('dev', ['concurrent:devWatch']);
   grunt.registerTask('demoServer', ['express', 'express-keepalive']);

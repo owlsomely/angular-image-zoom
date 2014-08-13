@@ -5,7 +5,7 @@ A native angular.js diretive that provide basic image-hover-zoom feature like jQ
 Created for [http://owl.gift](http://owl.gift)
 
 # Size
-* JS: min: 2.67 KB
+* JS: min: 3,015 B
 * CSS: 650 B
 * Template: 148 B
 
@@ -26,9 +26,14 @@ Usage
 2. include the supplied CSS file (or create your own).
 3. add image-zoom element
 
-    ```html
-    <div image-src="./Pevensey_castle-09.jpg" image-zoom></div>
-    ```
+  ```html
+  <div image-src="./Pevensey_castle-09.jpg" image-zoom></div>
+  ```
+
+  **Alternate Template URL**
+  ```html
+  <div image-src="./Pevensey_castle-09.jpg" image-zoom data-template-url="/assets/my-image-template.html"></div>
+  ```
 
 4. *optional* Switch Images (refer to the demo):
 
@@ -56,6 +61,16 @@ Usage
     </div>
   </body>
   ```
+
+## Contributing
+
+`npm install`
+
+### Run Local Server
+`grunt dev`
+
+### Build
+`grunt build`
 
 ## Authors
 
