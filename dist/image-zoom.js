@@ -41,7 +41,7 @@ var ImageZoom = angular.module('ImageZoom', [])
           var lensCSS;
           var isLensHidden = false;
           var isImageLoading = false;
-
+          var zoom = 1.5;
 
           //Enable Parent Controller to change the imageSrc
           var watchImageSrc = $scope.$parent.$watch('imageSrc', function (newVale, oldValue) {
@@ -77,7 +77,7 @@ var ImageZoom = angular.module('ImageZoom', [])
           var changeLensBgImg = function (img) {
             lens.css({
               background: 'url(' + img + ') no-repeat',
-              'background-size': nHeight + ' ' + nWidth,
+              'background-size': nWidth * zoom + 'px ' + nHeight * zoom + 'px',
             });
           };
 
@@ -118,17 +118,49 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           // When image loaded, get image natural width and height
           image.bind('load', function (evt) {
-            //console.log('imaged loaded');
-            nWidth = image.naturalWidth;
-            nHeight = image.naturalHeight;
+            console.log('imaged loaded');
+            nWidth = this.naturalWidth;
+            nHeight = this.naturalHeight;
             changeLensBgImg($scope.imageSrc);
+            //if(tAttrs.maxHeight)
+              ensureAspectRatio(nWidth, nHeight);
           });
+
+          var ensureAspectRatio = function(nWidth, nHeight){
+            var newSize = calculateAspectRatioFit(nWidth, nHeight, 300, 250);
+            element.css({
+              width: newSize.width + 'px',
+              height: newSize.height + 'px'
+            });
+            console.log(newSize);
+          };
+
+          /**
+            * Conserve aspect ratio of the orignal region. Useful when shrinking/enlarging
+            * images to fit into a certain area.
+            *
+            * @param {Number} srcWidth Source area width
+            * @param {Number} srcHeight Source area height
+            * @param {Number} maxWidth Fittable area maximum available width
+            * @param {Number} maxHeight Fittable area maximum available height
+            * @return {Object} { width, heigth }
+            */
+          var calculateAspectRatioFit = function (srcWidth, srcHeight, maxWidth, maxHeight) {
+              console.log({srcW: srcWidth, srcH:srcHeight});
+              var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+              return { width: srcWidth*ratio, height: srcHeight*ratio };
+           };
 
           var getLensBgStyle = function (evt) {
             var mx, my, rx, ry, px, py, bgp,
-              // IE8 uses evt.x and evt.y
-              mx = (evt.pageX) ? (evt.pageX - el.left) : evt.x;
+            // IE8 uses evt.x and evt.y
+            mx = (evt.pageX) ? (evt.pageX - el.left) : evt.x;
             my = (evt.pageY) ? (evt.pageY - el.top) : evt.y;
+
+            // Consider page scrolling.
+            my -= document.body.scrollTop;
+            mx -= document.body.scrollLeft;
 
             if (mx < el.width && my < el.height && mx > 0 && my > 0) {
               showGlass();
@@ -136,8 +168,8 @@ var ImageZoom = angular.module('ImageZoom', [])
               hideLens();
               return;
             }
-            rx = Math.round(mx / el.width * nWidth - el.lensWidth / 2) * -1;
-            ry = Math.round(my / el.height * nHeight - el.lensHeight / 2) * -1;
+            rx = Math.round(mx / el.width * nWidth * zoom - el.lensWidth / 2) * -1;
+            ry = Math.round(my / el.height * nHeight * zoom - el.lensHeight / 2) * -1;
             bgp = rx + 'px ' + ry + 'px';
 
             px = mx - el.lensWidth / 2;
@@ -159,7 +191,6 @@ var ImageZoom = angular.module('ImageZoom', [])
               }
               img = new Image();
               img.onload = function () {
-                //console.log('img Loaded: height: ' + img.height + ' width: ' + img.width);
                 nWidth = img.width;
                 nHeight = img.height;
                 isImageLoading = false;
