@@ -10,7 +10,9 @@
 /*global angular*/
 var ImageZoom = angular.module('ImageZoom', [])
   .constant('ImageZoomDefaultConfig', {
-    templateUrl: 'image-zoom.html'
+    templateUrl: 'image-zoom.html',
+    zoomFactor: 1.5,
+    backgroundColor: 'transparent'
   })
   .controller('ImageZoomController', ['$scope',
     function ($scope) {
@@ -29,6 +31,11 @@ var ImageZoom = angular.module('ImageZoom', [])
         },
         scope: {
           imageSrc: '@',
+          zoomFactor: '=?',
+          maxHeight: '=?',
+          maxWidth: '=?',
+          positionAbsolute: '=?',
+          backgroundColor: '=?',
           templateUrl: '=?templateUrl'
         },
         link: function ($scope, element) {
@@ -41,7 +48,18 @@ var ImageZoom = angular.module('ImageZoom', [])
           var lensCSS;
           var isLensHidden = false;
           var isImageLoading = false;
-          var zoom = 1.5;
+
+          // Check if zoomFactor was set 
+          // otherwise set it to ImageZoomDefaultConfig.zoomFactor
+          if(!$scope.zoomFactor){
+            $scope.zoomFactor = ImageZoomDefaultConfig.zoomFactor;
+          }
+
+          // Check if backgroundColor was set 
+          // otherwise set it to ImageZoomDefaultConfig.backgroundColor
+          if(!$scope.backgroundColor){
+            $scope.backgroundColor = ImageZoomDefaultConfig.backgroundColor;
+          }
 
           //Enable Parent Controller to change the imageSrc
           var watchImageSrc = $scope.$parent.$watch('imageSrc', function (newVale, oldValue) {
@@ -76,8 +94,8 @@ var ImageZoom = angular.module('ImageZoom', [])
           // Update the background image
           var changeLensBgImg = function (img) {
             lens.css({
-              background: 'url(' + img + ') no-repeat',
-              'background-size': nWidth * zoom + 'px ' + nHeight * zoom + 'px',
+              background: $scope.backgroundColor + ' url(' + img + ') no-repeat',
+              'background-size': nWidth * $scope.zoomFactor + 'px ' + nHeight * $scope.zoomFactor + 'px'
             });
           };
 
@@ -112,7 +130,6 @@ var ImageZoom = angular.module('ImageZoom', [])
             $document.on('mouseleave', mouseleave);
           });
 
-
           // clean up
           element.on('destroy', watchImageSrc);
 
@@ -122,17 +139,20 @@ var ImageZoom = angular.module('ImageZoom', [])
             nWidth = this.naturalWidth;
             nHeight = this.naturalHeight;
             changeLensBgImg($scope.imageSrc);
-            //if(tAttrs.maxHeight)
+            if($scope.maxHeight || $scope.maxWidth){
               ensureAspectRatio(nWidth, nHeight);
+            }
           });
 
-          var ensureAspectRatio = function(nWidth, nHeight){
-            var newSize = calculateAspectRatioFit(nWidth, nHeight, 300, 250);
+          var ensureAspectRatio = function(nWidth, nHeight) {
+            var maxWidth = image.width || $scope.maxWidth,
+                maxHeight = image.height || $scope.maxHeight;
+
+            var newSize = calculateAspectRatioFit(nWidth, nHeight, maxWidth, maxHeight);
             element.css({
               width: newSize.width + 'px',
               height: newSize.height + 'px'
             });
-            console.log(newSize);
           };
 
           /**
@@ -153,14 +173,17 @@ var ImageZoom = angular.module('ImageZoom', [])
            };
 
           var getLensBgStyle = function (evt) {
-            var mx, my, rx, ry, px, py, bgp,
+            var mx, my, rx, ry, px, py, bgp;
+
             // IE8 uses evt.x and evt.y
             mx = (evt.pageX) ? (evt.pageX - el.left) : evt.x;
             my = (evt.pageY) ? (evt.pageY - el.top) : evt.y;
 
-            // Consider page scrolling.
-            my -= document.body.scrollTop;
-            mx -= document.body.scrollLeft;
+            // Consider page scrolling if attr is set
+            if($scope.positionAbsolute){
+              my -= document.body.scrollTop;
+              mx -= document.body.scrollLeft;
+            }
 
             if (mx < el.width && my < el.height && mx > 0 && my > 0) {
               showGlass();
@@ -168,17 +191,20 @@ var ImageZoom = angular.module('ImageZoom', [])
               hideLens();
               return;
             }
-            rx = Math.round(mx / el.width * nWidth * zoom - el.lensWidth / 2) * -1;
-            ry = Math.round(my / el.height * nHeight * zoom - el.lensHeight / 2) * -1;
+            rx = Math.round(mx * $scope.zoomFactor - el.lensWidth / 2) * -1;
+            ry = Math.round(my * $scope.zoomFactor - el.lensHeight / 2) * -1;
             bgp = rx + 'px ' + ry + 'px';
 
             px = mx - el.lensWidth / 2;
             py = my - el.lensHeight / 2;
 
+            var bgSize = (el.width * $scope.zoomFactor) + 'px ' + (el.height * $scope.zoomFactor)  + 'px'
+
             return {
               left: px + 'px',
               top: py + 'px',
-              backgroundPosition: bgp
+              backgroundPosition: bgp,
+              backgroundSize: bgSize
             };
           };
 
