@@ -35,7 +35,33 @@ Usage
   <div image-src="./Pevensey_castle-09.jpg" image-zoom data-template-url="/assets/my-image-template.html"></div>
   ```
 
-4. *optional* Switch Images (refer to the demo):
+4. configuration attributes
+  * `zoom-factor` (defaults to 1.5): Sets how much zoom will be applied to the image. It’s a multiplier for image display size.  
+    Example:
+    ```html
+    <div image-src="./Pevensey_castle-09.jpg" image-zoom zoom-factor="2">
+    ```
+
+  * `background-color` (defaults to 'transparent'): Sets the background color for the magnifying glass.  
+  Example:
+  ```html
+  <div image-src="./Pevensey_castle-09.jpg" image-zoom background-color="'#FFFFFF'">
+  ```
+
+  * `max-width` and `max-height`: If at least one of the two values is set, image size will be calculated to fit maintaining its aspect ratio. If only one of the two is set, the other will be set with image’s natural width/height. 
+    Example:
+    ```html
+    <div image-src="./Pevensey_castle-09.jpg" image-zoom max-width="300" max-height="250">
+    ```
+
+  * `position-absolute`: If attribute is set to true, magnifying glass position will take page scrolling in account. This feature is intended for using the plugin within an absolute positioned element. 
+    Example:
+    ```html
+    <div image-src="./Pevensey_castle-09.jpg" image-zoom position-absolute="true">
+    ```
+
+
+5. *optional* Switch Images (refer to the demo):
 
   ```html
   <body ng-app="ImageZoomExample" ng-controller="ExampleCtrl">
