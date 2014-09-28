@@ -105,6 +105,8 @@ Usage
 + http://chen.technology
 + http://github.com/uschen
 
+and [contributors](https://github.com/owlsomely/angular-image-zoom/graphs/contributors)
+
 
 ## References:
 Inspired by [https://github.com/jotielim/ng-magnify](https://github.com/jotielim/ng-magnify)
