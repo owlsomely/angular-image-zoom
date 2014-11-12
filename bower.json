@@ -31,8 +31,7 @@
     "src",
     "lib",
     "Gruntfile.js",
-    "package.json",
-
+    "package.json"
   ],
   "dependencies": {
     "angular": "1.2.16"
