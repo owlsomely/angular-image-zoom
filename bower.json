@@ -1,0 +1,39 @@
+{
+  "name": "angular-image-zoom",
+  "version": "0.1.0",
+  "homepage": "https://github.com/owlsomely/angular-image-zoom",
+  "authors": [
+    "owlsomely"
+  ],
+  "description": "zoom images using this angular directive",
+  "main": [
+    "dist/image-zoom.js",
+    "dist/image-zoom.css"
+  ],
+  "keywords": [
+    "zoom",
+    "image",
+    "angular",
+    "directive"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "_*",
+    ".*",
+    "CHANGELOG",
+    "doc",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "src",
+    "lib",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "1.2.16"
+  }
+}
