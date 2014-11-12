@@ -118,14 +118,9 @@ module.exports = function (grunt) {
     },
   });
 
-  grunt.loadNpmTasks('grunt-express');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-concurrent');
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);
+  
   // build
   grunt.registerTask('build', ['copy:templateToDist', 'less', 'concat', 'uglify']);
   //development
