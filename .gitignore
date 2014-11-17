@@ -14,3 +14,6 @@ classes/
 /node_modules
 *.jar
 lib/bower_components
+
+demo/dist
+.grunt

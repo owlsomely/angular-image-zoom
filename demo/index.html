@@ -4,8 +4,8 @@
     <!-- angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
     <!-- image-zoom -->
-    <script src="image-zoom.js"></script>
-    <link href='image-zoom.css' rel='stylesheet' />
+    <script src="dist/image-zoom.js"></script>
+    <link href='dist/image-zoom.css' rel='stylesheet' />
     <!-- demo app -->
     <script src="app.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -17,7 +17,7 @@
     <div class="container">
       <h1>Angular Image Zoom Demo</h1>
       <div class="thumbnail" style="width: 400px;">
-        <div image-src="./Pevensey_castle-09.jpg" image-zoom>
+        <div image-src="{{imageSrc}}" image-zoom data-template-url="dist/image-zoom.html">
         </div>
         </div>
         <h2>Switch Images</h2>
@@ -36,4 +36,3 @@
     </div>
   </body>
 </html>
-
