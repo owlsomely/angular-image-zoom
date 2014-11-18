@@ -4,8 +4,8 @@
     <!-- angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
     <!-- image-zoom -->
-    <script src="image-zoom.js"></script>
-    <link href='image-zoom.css' rel='stylesheet' />
+    <script src="dist/image-zoom.js"></script>
+    <link href='dist/image-zoom.css' rel='stylesheet' />
     <!-- demo app -->
     <script src="app.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -17,17 +17,17 @@
     <div class="container">
       <h1>Angular Image Zoom Demo</h1>
       <div class="thumbnail" style="width: 400px;">
-        <div image-src="./Pevensey_castle-09.jpg" image-zoom>
+        <div image-src="{{imageSrc}}" image-zoom data-template-url="dist/image-zoom.html">
         </div>
         </div>
         <h2>Switch Images</h2>
         <div class="row thumbnails">
-          <div class="col-xs-4">
+          <div class="col-xs-4" style="cursor:pointer;">
             <a ng-click="switchImage('Pevensey_castle-09.jpg')" class="thumbnail product-image">
               <img src="320px-Pevensey_castle-09.jpg" alt="wooops" />
             </a>
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-4" style="cursor:pointer;">
             <a ng-click="switchImage('Pevensey_Castle_exterior.jpg')" class="thumbnail product-image">
               <img src="320px-Pevensey_Castle_exterior.jpg" alt="woops" />
             </a>
@@ -36,4 +36,3 @@
     </div>
   </body>
 </html>
-
