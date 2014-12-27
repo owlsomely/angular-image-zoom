@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "homepage": "https://github.com/DropsOfSerenity/angular-image-zoom",
   "authors": [
-    "owlsomely",
+    "owlsomely"
   ],
   "description": "Add a hover zoom with a magnifying lens to images in angular",
   "main": [
