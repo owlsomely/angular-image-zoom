@@ -1,11 +1,11 @@
 {
-  "name": "angular-image-zoom",
-  "version": "0.1.0",
-  "homepage": "https://github.com/owlsomely/angular-image-zoom",
+  "name": "angular-image-zoom-nested",
+  "version": "0.2.1",
+  "homepage": "https://github.com/DropsOfSerenity/angular-image-zoom",
   "authors": [
     "owlsomely"
   ],
-  "description": "zoom images using this angular directive",
+  "description": "Add a hover zoom with a magnifying lens to images in angular",
   "main": [
     "dist/image-zoom.js",
     "dist/image-zoom.css"
@@ -37,3 +37,4 @@
     "angular": "1.2.16"
   }
 }
+

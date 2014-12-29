@@ -238,7 +238,11 @@ var ImageZoom = angular.module('ImageZoom', [])
                 offsetLeft += el.offsetLeft;
                 offsetTop += el.offsetTop;
               }
-              el = el.offsetParent;
+              while (el.offsetParent) {
+                el = el.offsetParent;
+                offsetTop += el.offsetTop;
+                offsetLeft += el.offsetLeft;
+              }
             }
             return {
               left: offsetLeft,
