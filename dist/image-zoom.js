@@ -179,9 +179,10 @@ var ImageZoom = angular.module('ImageZoom', [])
             my = (evt.pageY) ? (evt.pageY - el.top) : evt.y;
 
             // Consider page scrolling if attr is set
+            // Support for older ie versions
             if($scope.positionAbsolute){
-              my -= document.body.scrollTop;
-              mx -= document.body.scrollLeft;
+              my -= (document.body.scrollTop || document.documentElement.scrollTop);
+              mx -= (document.body.scrollLeft || document.documentElement.scrollLeft);
             }
 
             if (mx < el.width && my < el.height && mx > 0 && my > 0) {
