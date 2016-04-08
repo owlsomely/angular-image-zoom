@@ -1,3 +1,4 @@
+'use strict';
 /*
  * angular-image-zoom
  *
@@ -6,7 +7,6 @@
  * (c) 2014 Chen Liang <code@chen.technology> All rights reserved.
  * See the LICENSE file distributed with this work.
  */
-'use strict';
 /*global angular*/
 var ImageZoom = angular.module('ImageZoom', [])
   .constant('ImageZoomDefaultConfig', {
@@ -21,7 +21,7 @@ var ImageZoom = angular.module('ImageZoom', [])
     }
   ])
   .directive('imageZoom', ['ImageZoomDefaultConfig', '$document',
-    function (ImageZoomDefaultConfig, $document) {
+    function (ImageZoomDefaultConfig) {
       return {
         restrict: 'EA',
         replace: true,
@@ -39,7 +39,6 @@ var ImageZoom = angular.module('ImageZoom', [])
           templateUrl: '=?templateUrl'
         },
         link: function ($scope, element) {
-
           var lens = element.find('div');
           var image = element.find('img');
           var el;
@@ -49,13 +48,13 @@ var ImageZoom = angular.module('ImageZoom', [])
           var isLensHidden = false;
           var isImageLoading = false;
 
-          // Check if zoomFactor was set 
+          // Check if zoomFactor was set
           // otherwise set it to ImageZoomDefaultConfig.zoomFactor
           if(!$scope.zoomFactor){
             $scope.zoomFactor = ImageZoomDefaultConfig.zoomFactor;
           }
 
-          // Check if backgroundColor was set 
+          // Check if backgroundColor was set
           // otherwise set it to ImageZoomDefaultConfig.backgroundColor
           if(!$scope.backgroundColor){
             $scope.backgroundColor = ImageZoomDefaultConfig.backgroundColor;
@@ -109,8 +108,8 @@ var ImageZoom = angular.module('ImageZoom', [])
           var mouseleave = function (evt) {
             console.log('[mouseleave]');
             hideLens();
-            $document.off('mousemove', mousemove);
-            $document.off('mouseleave', mouseleave);
+            element.off('mousemove', mousemove);
+            element.off('mouseleave', mouseleave);
           };
 
           element.on('mouseenter', function () {
@@ -126,8 +125,8 @@ var ImageZoom = angular.module('ImageZoom', [])
               lensHeight: lens[0].offsetHeight
             };
             el = angular.extend($scope.getOffset(element[0]), extInfo);
-            $document.on('mousemove', mousemove);
-            $document.on('mouseleave', mouseleave);
+            element.on('mousemove', mousemove);
+            element.on('mouseleave', mouseleave);
           });
 
           // clean up
@@ -180,9 +179,10 @@ var ImageZoom = angular.module('ImageZoom', [])
             my = (evt.pageY) ? (evt.pageY - el.top) : evt.y;
 
             // Consider page scrolling if attr is set
+            // Support for older ie versions
             if($scope.positionAbsolute){
-              my -= document.body.scrollTop;
-              mx -= document.body.scrollLeft;
+              my -= (document.body.scrollTop || document.documentElement.scrollTop);
+              mx -= (document.body.scrollLeft || document.documentElement.scrollLeft);
             }
 
             if (mx < el.width && my < el.height && mx > 0 && my > 0) {
@@ -198,8 +198,8 @@ var ImageZoom = angular.module('ImageZoom', [])
             px = mx - el.lensWidth / 2;
             py = my - el.lensHeight / 2;
 
-            var bgSize = (el.width * $scope.zoomFactor) + 'px ' + (el.height * $scope.zoomFactor)  + 'px'
-
+            var bgSize = (el.width * $scope.zoomFactor) + 'px ' +
+                         (el.height * $scope.zoomFactor)  + 'px';
             return {
               left: px + 'px',
               top: py + 'px',
@@ -210,7 +210,6 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           $scope.magnify = function (evt) {
             var img;
-
             if (!nWidth && !nHeight) {
               if (isImageLoading) {
                 return;
@@ -238,11 +237,8 @@ var ImageZoom = angular.module('ImageZoom', [])
                 offsetLeft += el.offsetLeft;
                 offsetTop += el.offsetTop;
               }
-              while (el.offsetParent) {
-                el = el.offsetParent;
-                offsetTop += el.offsetTop;
-                offsetLeft += el.offsetLeft;
-              }
+              offsetLeft += el.getBoundingClientRect().left;
+              offsetTop += el.getBoundingClientRect().top;
             }
             return {
               left: offsetLeft,
