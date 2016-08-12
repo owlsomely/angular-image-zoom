@@ -6,7 +6,7 @@
     "angular",
     "angularjs"
   ],
-  "main": "src/image-zoom.js",
+  "main": "index.js",
   "scripts": {
     "test": "grunt test"
   },
