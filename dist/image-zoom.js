@@ -106,7 +106,7 @@ var ImageZoom = angular.module('ImageZoom', [])
           };
 
           var mouseleave = function (evt) {
-            console.log('[mouseleave]');
+            // console.log('[mouseleave]');
             hideLens();
             element.off('mousemove', mousemove);
             element.off('mouseleave', mouseleave);
@@ -134,7 +134,7 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           // When image loaded, get image natural width and height
           image.bind('load', function (evt) {
-            console.log('imaged loaded');
+            // console.log('imaged loaded');
             nWidth = this.naturalWidth;
             nHeight = this.naturalHeight;
             changeLensBgImg($scope.imageSrc);
@@ -165,7 +165,7 @@ var ImageZoom = angular.module('ImageZoom', [])
             * @return {Object} { width, heigth }
             */
           var calculateAspectRatioFit = function (srcWidth, srcHeight, maxWidth, maxHeight) {
-              console.log({srcW: srcWidth, srcH:srcHeight});
+              // console.log({srcW: srcWidth, srcH:srcHeight});
               var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
               return { width: srcWidth*ratio, height: srcHeight*ratio };
