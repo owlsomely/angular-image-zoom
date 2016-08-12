@@ -1,2 +1,2 @@
 require('./dist/image-zoom.js');
-module.exports = 'imageZoom';
+module.exports = 'ImageZoom';
